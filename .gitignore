@@ -1,0 +1,25 @@
+# Allowlist style: ignore everything by default, un-ignore explicit tracked files.
+*
+
+# Un-ignore directories so their contents can be selectively un-ignored below
+!src/
+!src/**/
+!tests/
+!tests/**/
+!scripts/
+!scripts/**/
+!data/
+
+# Tracked files
+!.gitignore
+!README.md
+!requirements.txt
+!.env.example
+!pyproject.toml
+
+!src/awardhawk/*.py
+!tests/*.py
+!scripts/*.py
+!data/.gitkeep
+
+# CLAUDE.md is intentionally NOT un-ignored (kept local, not committed)
