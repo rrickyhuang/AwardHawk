@@ -6,6 +6,7 @@
 !src/**/
 !tests/
 !tests/**/
+!tests/fixtures/
 !scripts/
 !scripts/**/
 !data/
@@ -19,6 +20,7 @@
 
 !src/awardhawk/*.py
 !tests/*.py
+!tests/fixtures/*.html
 !scripts/*.py
 !data/.gitkeep
 
