@@ -17,7 +17,7 @@ RELEVANT_PROGRAMS = [
 # distinctly in output rather than run through the bonus/transfer calculation path.
 NO_TRANSFER_PROGRAMS = ["Aeroplan"]
 
-TARGET_CABINS = ["business", "first"]
+TARGET_CABINS = ["economy", "business"]
 
 # Amex -> foreign airline program excise tax, ~0.06 cents/point, capped (spec §7).
 AMEX_EXCISE_TAX_PER_POINT = 0.0006
