@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "price": {"total": "2650.40", "currency": "CAD"}
+    },
+    {
+      "id": "2",
+      "price": {"total": "2050.75", "currency": "CAD"}
+    },
+    {
+      "id": "3",
+      "price": {"total": "3120.00", "currency": "CAD"}
+    }
+  ]
+}

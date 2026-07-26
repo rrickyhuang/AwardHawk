@@ -21,6 +21,7 @@
 !src/awardhawk/*.py
 !tests/*.py
 !tests/fixtures/*.html
+!tests/fixtures/*.json
 !scripts/*.py
 !data/.gitkeep
 
