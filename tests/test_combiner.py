@@ -71,10 +71,27 @@ def test_compute_ranked_option_computes_cpp():
     assert option.cpp == (4200.0 - 100.0) / 87500 * 100
 
 
-def test_rank_options_sorts_by_effective_points_ascending():
-    cheap = combiner.compute_ranked_option(_award("Aeroplan", 60000), None, _CASH, 100.0)
-    pricey = combiner.compute_ranked_option(_award("ANA Mileage Club", 90000), None, _CASH, 100.0)
+def test_compute_ranked_option_deducts_excise_tax_on_transfer():
+    award = _award("ANA Mileage Club", 90000)
 
-    ranked = combiner.rank_options([pricey, cheap])
+    option = combiner.compute_ranked_option(award, None, _CASH, 100.0)
 
-    assert ranked == [cheap, pricey]
+    excise_tax = 90000 * combiner.config.AMEX_EXCISE_TAX_PER_POINT
+    assert option.cpp == (4200.0 - 100.0 - excise_tax) / 90000 * 100
+
+
+def test_compute_ranked_option_no_excise_tax_for_no_transfer_program():
+    award = _award("Aeroplan", 87500)
+
+    option = combiner.compute_ranked_option(award, None, _CASH, 100.0)
+
+    assert option.cpp == (4200.0 - 100.0) / 87500 * 100
+
+
+def test_rank_options_sorts_by_cpp_descending():
+    better = combiner.compute_ranked_option(_award("Aeroplan", 60000), None, _CASH, 100.0)
+    worse = combiner.compute_ranked_option(_award("ANA Mileage Club", 90000), None, _CASH, 100.0)
+
+    ranked = combiner.rank_options([worse, better])
+
+    assert ranked == [better, worse]

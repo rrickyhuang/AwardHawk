@@ -1,4 +1,4 @@
-"""Milestone 3/4: join award results, bonuses, and cash baselines into ranked CPP options.
+"""Milestone 4: join award results, bonuses, and cash baselines into ranked CPP options.
 
 See project spec §4.5.
 
@@ -24,14 +24,21 @@ def compute_ranked_option(
 
     if award.program in config.NO_TRANSFER_PROGRAMS:
         effective_points = award.miles_required
+        excise_tax = 0.0
         notes.append("no transfer needed")
-    elif bonus is not None:
-        effective_points = round(award.miles_required / (1 + bonus.bonus_percent))
-        notes.append(f"{bonus.bonus_percent:.0%} transfer bonus applied")
     else:
-        effective_points = award.miles_required
+        if bonus is not None:
+            effective_points = round(award.miles_required / (1 + bonus.bonus_percent))
+            notes.append(f"{bonus.bonus_percent:.0%} transfer bonus applied")
+        else:
+            effective_points = award.miles_required
+        excise_tax = effective_points * config.AMEX_EXCISE_TAX_PER_POINT
 
-    cpp = (cash_baseline.fare_amount - award_taxes_and_fees) / effective_points * 100
+    cpp = (
+        (cash_baseline.fare_amount - award_taxes_and_fees - excise_tax)
+        / effective_points
+        * 100
+    )
 
     return RankedOption(
         award_result=award,
@@ -44,9 +51,5 @@ def compute_ranked_option(
 
 
 def rank_options(options: list[RankedOption]) -> list[RankedOption]:
-    """Sort ranked options by effective Amex points, ascending (fewest points = best).
-
-    Miles-only ranking for milestone 3; CPP isn't factored in until the cash
-    baseline lands (#8), which re-ranks by CPP descending instead.
-    """
-    return sorted(options, key=lambda option: option.effective_amex_points)
+    """Sort ranked options by CPP, descending (highest value per point = best)."""
+    return sorted(options, key=lambda option: option.cpp, reverse=True)
